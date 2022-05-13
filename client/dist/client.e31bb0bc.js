@@ -5371,104 +5371,143 @@ var getDataToDB = /*#__PURE__*/function () {
   };
 }();
 
-function dragElement(elmnt) {
-  var pos1 = 0,
-      pos2 = 0,
-      pos3 = 0,
-      pos4 = 0;
+function dragElement(_x2) {
+  return _dragElement.apply(this, arguments);
+}
 
-  if (document.getElementById(elmnt.id + "header")) {
-    // если присутствует, заголовок - это место, откуда вы перемещаете DIV:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // в противном случае переместите DIV из любого места внутри DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
+function _dragElement() {
+  _dragElement = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(elmnt) {
+    var pos1, pos2, pos3, pos4, x, y, dragMouseDown, _dragMouseDown, elementDrag, _elementDrag, closeDragElement;
 
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault(); // получить положение курсора мыши при запуске:
-
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement; // вызов функции при каждом перемещении курсора:
-
-    document.onmousemove = elementDrag;
-    console.log("Circle", e);
-  }
-
-  function elementDrag(_x2) {
-    return _elementDrag.apply(this, arguments);
-  }
-
-  function _elementDrag() {
-    _elementDrag = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
-      var read;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              e = e || window.event;
-              e.preventDefault();
-              read = {
-                pos1: pos1,
-                pos2: pos2
-              };
-              console.log(read);
-              _context4.next = 6;
-              return setDataToDB(read);
-
-            case 6:
-              // вычислить новую позицию курсора:
-              pos1 = pos3 - e.clientX;
-              pos2 = pos4 - e.clientY;
-              pos3 = e.clientX;
-              pos4 = e.clientY; // установите новое положение элемента:
-
-              /* elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-              elmnt.style.left = elmnt.offsetLeft - pos1 + "px"; */
-
-              console.log("Circle2", e);
-
-            case 11:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4);
-    }));
-    return _elementDrag.apply(this, arguments);
-  }
-
-  var x = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var res;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context3.next = 2;
-            return getDataToDB();
+            closeDragElement = function _closeDragElement() {
+              // остановка перемещения при отпускании кнопки мыши:
+              document.onmouseup = null;
+              document.onmousemove = null;
+            };
 
-          case 2:
-            res = _context3.sent;
+            _elementDrag = function _elementDrag3() {
+              _elementDrag = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(e) {
+                var read;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                  while (1) {
+                    switch (_context5.prev = _context5.next) {
+                      case 0:
+                        e = e || window.event;
+                        e.preventDefault(); // вычислить новую позицию курсора:
 
-            /*  if (res.pos1=)  */
-            elmnt.style.top = elmnt.offsetTop - res.pos2 + "px";
-            elmnt.style.left = elmnt.offsetLeft - res.pos1 + "px";
+                        pos1 = pos3 - e.clientX;
+                        pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX;
+                        pos4 = e.clientY; // установите новое положение элемента:
 
-          case 5:
+                        y = elmnt.offsetTop - pos2;
+                        x = elmnt.offsetLeft - pos1;
+                        read = {
+                          x: x,
+                          y: y
+                        };
+                        _context5.next = 11;
+                        return setDataToDB(read);
+
+                      case 11:
+                      case "end":
+                        return _context5.stop();
+                    }
+                  }
+                }, _callee5);
+              }));
+              return _elementDrag.apply(this, arguments);
+            };
+
+            elementDrag = function _elementDrag2(_x4) {
+              return _elementDrag.apply(this, arguments);
+            };
+
+            _dragMouseDown = function _dragMouseDown3() {
+              _dragMouseDown = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                  while (1) {
+                    switch (_context4.prev = _context4.next) {
+                      case 0:
+                        e = e || window.event;
+                        e.preventDefault();
+                        /* let a = pos3;
+                        let a2 = pos4;
+                        const read = { a, a2 };
+                        await setDataToDB(read); */
+                        // получить положение курсора мыши при запуске:
+
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        document.onmouseup = closeDragElement; // вызов функции при каждом перемещении курсора:
+
+                        document.onmousemove = elementDrag;
+
+                      case 6:
+                      case "end":
+                        return _context4.stop();
+                    }
+                  }
+                }, _callee4);
+              }));
+              return _dragMouseDown.apply(this, arguments);
+            };
+
+            dragMouseDown = function _dragMouseDown2(_x3) {
+              return _dragMouseDown.apply(this, arguments);
+            };
+
+            pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            x = 0;
+            y = 0;
+
+            if (document.getElementById(elmnt.id + "header")) {
+              // если присутствует, заголовок - это место, откуда вы перемещаете DIV:
+              document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+              // в противном случае переместите DIV из любого места внутри DIV:
+              elmnt.onmousedown = dragMouseDown;
+            }
+
+            setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+              var res;
+              return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                while (1) {
+                  switch (_context3.prev = _context3.next) {
+                    case 0:
+                      _context3.next = 2;
+                      return getDataToDB();
+
+                    case 2:
+                      res = _context3.sent;
+                      console.log("res", res.y != y && res.x != x);
+                      /* if (res.y != y && res.x != x) { */
+
+                      elmnt.style.top = res.y + "px";
+                      elmnt.style.left = res.x + "px";
+                      res.y = y;
+                      res.x = x;
+
+                    case 8:
+                    case "end":
+                      return _context3.stop();
+                  }
+                }
+              }, _callee3);
+            })));
+
+          case 10:
           case "end":
-            return _context3.stop();
+            return _context6.stop();
         }
       }
-    }, _callee3);
-  })), 10);
-
-  function closeDragElement() {
-    // остановка перемещения при отпускании кнопки мыши:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
+    }, _callee6);
+  }));
+  return _dragElement.apply(this, arguments);
 }
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","axios":"node_modules/axios/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -5498,7 +5537,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45505" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44377" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

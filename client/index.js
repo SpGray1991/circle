@@ -19,11 +19,14 @@ const getDataToDB = async () => {
   });
 };
 
-function dragElement(elmnt) {
+async function dragElement(elmnt) {
   var pos1 = 0,
     pos2 = 0,
     pos3 = 0,
     pos4 = 0;
+  var x = 0;
+  var y = 0;
+
   if (document.getElementById(elmnt.id + "header")) {
     // если присутствует, заголовок - это место, откуда вы перемещаете DIV:
     document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
@@ -32,16 +35,16 @@ function dragElement(elmnt) {
     elmnt.onmousedown = dragMouseDown;
   }
 
-  function dragMouseDown(e) {
+  async function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
+
     // получить положение курсора мыши при запуске:
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
     // вызов функции при каждом перемещении курсора:
     document.onmousemove = elementDrag;
-    console.log("Circle", e);
   }
 
   async function elementDrag(e) {
@@ -49,27 +52,29 @@ function dragElement(elmnt) {
 
     e.preventDefault();
 
-    const read = { pos1, pos2 };
-    console.log(read);
-    await setDataToDB(read);
-
     // вычислить новую позицию курсора:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
     // установите новое положение элемента:
-    /* elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-    elmnt.style.left = elmnt.offsetLeft - pos1 + "px"; */
-    console.log("Circle2", e);
-  }
-  let x = setInterval(async () => {
-    let res = await getDataToDB();
-    /*  if (res.pos1=)  */
-    elmnt.style.top = elmnt.offsetTop - res.pos2 + "px";
+    y = elmnt.offsetTop - pos2;
+    x = elmnt.offsetLeft - pos1;
 
-    elmnt.style.left = elmnt.offsetLeft - res.pos1 + "px";
-  }, 10);
+    const read = { x, y };
+    await setDataToDB(read);
+  }
+
+  setInterval(async () => {
+    let res = await getDataToDB();
+    /* console.log("res", res.y != y && res.x != x); */
+    elmnt.style.top = res.y + "px";
+
+    elmnt.style.left = res.x + "px";
+
+    res.y = y;
+    res.x = x;
+  }, 50);
 
   function closeDragElement() {
     // остановка перемещения при отпускании кнопки мыши:
