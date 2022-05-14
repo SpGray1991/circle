@@ -5313,16 +5313,16 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-dragElement(document.getElementById("mydiv"));
+dragElement(document.getElementById("circle"));
 
 var setDataToDB = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(location) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(coords) {
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _axios.default.post("http://localhost:5000/", location).then(function (response) {
+            return _axios.default.post("http://localhost:5000/", coords).then(function (response) {
               return response.data;
             });
 
@@ -5350,8 +5350,6 @@ var getDataToDB = /*#__PURE__*/function () {
           case 0:
             _context2.next = 2;
             return _axios.default.get("http://localhost:5000/").then(function (response) {
-              console.log("GET success");
-              console.log(response.data);
               return response.data;
             });
 
@@ -5371,143 +5369,88 @@ var getDataToDB = /*#__PURE__*/function () {
   };
 }();
 
-function dragElement(_x2) {
-  return _dragElement.apply(this, arguments);
-}
+function dragElement(elmnt) {
+  var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0,
+      x = 0,
+      y = 0;
+  elmnt.onmousedown = dragMouseDown;
 
-function _dragElement() {
-  _dragElement = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(elmnt) {
-    var pos1, pos2, pos3, pos4, x, y, dragMouseDown, _dragMouseDown, elementDrag, _elementDrag, closeDragElement;
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
 
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+  function elementDrag(_x2) {
+    return _elementDrag.apply(this, arguments);
+  }
+
+  function _elementDrag() {
+    _elementDrag = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
+      var coords;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              e = e || window.event;
+              e.preventDefault();
+              pos1 = pos3 - e.clientX;
+              pos2 = pos4 - e.clientY;
+              pos3 = e.clientX;
+              pos4 = e.clientY;
+              y = elmnt.offsetTop - pos2;
+              x = elmnt.offsetLeft - pos1;
+              coords = {
+                x: x,
+                y: y
+              };
+              _context4.next = 11;
+              return setDataToDB(coords);
+
+            case 11:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+    return _elementDrag.apply(this, arguments);
+  }
+
+  setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var res;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
-            closeDragElement = function _closeDragElement() {
-              // остановка перемещения при отпускании кнопки мыши:
-              document.onmouseup = null;
-              document.onmousemove = null;
-            };
+            _context3.next = 2;
+            return getDataToDB();
 
-            _elementDrag = function _elementDrag3() {
-              _elementDrag = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(e) {
-                var read;
-                return regeneratorRuntime.wrap(function _callee5$(_context5) {
-                  while (1) {
-                    switch (_context5.prev = _context5.next) {
-                      case 0:
-                        e = e || window.event;
-                        e.preventDefault(); // вычислить новую позицию курсора:
+          case 2:
+            res = _context3.sent;
+            elmnt.style.top = res.y + "px";
+            elmnt.style.left = res.x + "px";
+            res.y = y;
+            res.x = x;
 
-                        pos1 = pos3 - e.clientX;
-                        pos2 = pos4 - e.clientY;
-                        pos3 = e.clientX;
-                        pos4 = e.clientY; // установите новое положение элемента:
-
-                        y = elmnt.offsetTop - pos2;
-                        x = elmnt.offsetLeft - pos1;
-                        read = {
-                          x: x,
-                          y: y
-                        };
-                        _context5.next = 11;
-                        return setDataToDB(read);
-
-                      case 11:
-                      case "end":
-                        return _context5.stop();
-                    }
-                  }
-                }, _callee5);
-              }));
-              return _elementDrag.apply(this, arguments);
-            };
-
-            elementDrag = function _elementDrag2(_x4) {
-              return _elementDrag.apply(this, arguments);
-            };
-
-            _dragMouseDown = function _dragMouseDown3() {
-              _dragMouseDown = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
-                  while (1) {
-                    switch (_context4.prev = _context4.next) {
-                      case 0:
-                        e = e || window.event;
-                        e.preventDefault();
-                        /* let a = pos3;
-                        let a2 = pos4;
-                        const read = { a, a2 };
-                        await setDataToDB(read); */
-                        // получить положение курсора мыши при запуске:
-
-                        pos3 = e.clientX;
-                        pos4 = e.clientY;
-                        document.onmouseup = closeDragElement; // вызов функции при каждом перемещении курсора:
-
-                        document.onmousemove = elementDrag;
-
-                      case 6:
-                      case "end":
-                        return _context4.stop();
-                    }
-                  }
-                }, _callee4);
-              }));
-              return _dragMouseDown.apply(this, arguments);
-            };
-
-            dragMouseDown = function _dragMouseDown2(_x3) {
-              return _dragMouseDown.apply(this, arguments);
-            };
-
-            pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            x = 0;
-            y = 0;
-
-            if (document.getElementById(elmnt.id + "header")) {
-              // если присутствует, заголовок - это место, откуда вы перемещаете DIV:
-              document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-            } else {
-              // в противном случае переместите DIV из любого места внутри DIV:
-              elmnt.onmousedown = dragMouseDown;
-            }
-
-            setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-              var res;
-              return regeneratorRuntime.wrap(function _callee3$(_context3) {
-                while (1) {
-                  switch (_context3.prev = _context3.next) {
-                    case 0:
-                      _context3.next = 2;
-                      return getDataToDB();
-
-                    case 2:
-                      res = _context3.sent;
-                      console.log("res", res.y != y && res.x != x);
-                      /* if (res.y != y && res.x != x) { */
-
-                      elmnt.style.top = res.y + "px";
-                      elmnt.style.left = res.x + "px";
-                      res.y = y;
-                      res.x = x;
-
-                    case 8:
-                    case "end":
-                      return _context3.stop();
-                  }
-                }
-              }, _callee3);
-            })));
-
-          case 10:
+          case 7:
           case "end":
-            return _context6.stop();
+            return _context3.stop();
         }
       }
-    }, _callee6);
-  }));
-  return _dragElement.apply(this, arguments);
+    }, _callee3);
+  })), 5);
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
 }
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","axios":"node_modules/axios/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -5537,7 +5480,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44377" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39395" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
