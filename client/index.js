@@ -1,19 +1,6 @@
-import "regenerator-runtime/runtime";
-import axios from "axios";
+import { setDataToDB, getDataToDB } from "./api.js";
 
 dragElement(document.getElementById("circle"));
-
-const setDataToDB = async (coords) => {
-  return await axios.post(`http://localhost:5000/`, coords).then((response) => {
-    return response.data;
-  });
-};
-
-const getDataToDB = async () => {
-  return await axios.get(`http://localhost:5000/`).then((response) => {
-    return response.data;
-  });
-};
 
 function dragElement(elmnt) {
   let pos1 = 0,
@@ -59,10 +46,7 @@ function dragElement(elmnt) {
 
     elmnt.style.top = res.y + "px";
     elmnt.style.left = res.x + "px";
-
-    res.y = y;
-    res.x = x;
-  }, 5);
+  });
 
   function closeDragElement() {
     document.onmouseup = null;
